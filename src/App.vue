@@ -8,29 +8,54 @@
     <v-content>
       <v-container class="fill-height" fluid >
         <v-row align="center" justify="center" >
-          <trend
-          :value="points"
-          :gradient="gradient"
-          :height="500"
-          :width="1000"
-          :isMove="isMove"
-          :selectedId="selecetedId"
-          auto-draw
-          smooth>
-        </trend>
+          <v-col cols="12">
+            <trend
+              :value="points"
+              :gradient="gradient"
+              :height="500"
+              :width="1000"
+              :isMove="isMove"
+              :selectedId="selecetedId"
+              auto-draw
+              smooth>
+            </trend>
+          </v-col>
 
-        <controll
-          :points="points"
-        ></controll>
+          <v-col cols="12">
+            <controll
+              :points="points"
+            ></controll>
+          </v-col>
+      
+          <v-col cols="6" v-for="point in points" v-bind:key="'input-' + point.x">
+            <v-card
+              outlined
+            >
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="headline mb-1">{{ point.x }}</v-list-item-title>
+                  <v-list-item-subtitle><input v-model="point.text"></v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-card-actions>
+                <v-btn @click="deletePoint(point.x)">削除</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
 
-        一覧
-        <div v-for="point in points" v-bind:key="'input-' + point.x">
-          {{ point.x }}
-          <input v-model="point.text">
-          <button @click="deletePoint(point.x)">削除</button>
-        </div>
-        <input v-model="x">
-        <button @click="addPoint(x)">追加</button>
+          <v-col cols="6">
+            <v-card>
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title class="headline mb-1"><input v-model="x"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-card-actions>
+                <v-btn @click="addPoint(x)">追加</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        
         </v-row>
       </v-container>
     </v-content>
