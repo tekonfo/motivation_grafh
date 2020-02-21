@@ -34,7 +34,7 @@
 
 <script>
   export default {
-    props: ['smooth', 'boundary', 'radius', 'id', 'max', 'min', 'points'],
+    props: ['boundary', 'points'],
 
     data: function () {
       return {

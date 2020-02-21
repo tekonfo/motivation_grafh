@@ -1,7 +1,7 @@
 import { genPath } from '../helpers/path'
 
 export default {
-  props: ['smooth', 'value', 'boundary', 'radius', 'id', 'max', 'min', 'points'],
+  props: ['smooth', 'radius', 'id', 'points'],
 
   render (h) {
     const { points, smooth, radius, id } = this

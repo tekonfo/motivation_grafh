@@ -7,8 +7,8 @@
 
     <v-content>
       <v-container class="fill-height" fluid >
-        <v-row align="center" justify="center" >
-          <v-col cols="12">
+        <v-row>
+          <v-col ref="parent" cols="12">
             <trend
               :value="points"
               :gradient="gradient"
@@ -16,8 +16,7 @@
               :width="1000"
               :isMove="isMove"
               :selectedId="selecetedId"
-              auto-draw
-              smooth>
+              >
             </trend>
           </v-col>
 
@@ -27,14 +26,16 @@
             ></controll>
           </v-col>
       
-          <v-col cols="6" v-for="point in points" v-bind:key="'input-' + point.x">
+          <v-col md="6" sm="6" v-for="point in points" v-bind:key="'input-' + point.x">
             <v-card
               outlined
             >
               <v-list-item>
                 <v-list-item-content>
                   <v-list-item-title class="headline mb-1">{{ point.x }}</v-list-item-title>
-                  <v-list-item-subtitle><input v-model="point.text"></v-list-item-subtitle>
+                  <v-list-item-subtitle>
+                    <input v-model="point.text">
+                  </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-card-actions>
@@ -43,7 +44,7 @@
             </v-card>
           </v-col>
 
-          <v-col cols="6">
+          <v-col md="6" sm="6">
             <v-card>
               <v-list-item>
                 <v-list-item-content>
@@ -111,7 +112,6 @@
         this.points.splice(index, 0, newPoint)
       },
       changePoint: function (x, y, text) {
-        console.log('home.vue のchangePointが起動された')
         const point = { x: x, y: y, text: text }
         const index = this.points.findIndex((v) => v.x === x)
         // 置き換え

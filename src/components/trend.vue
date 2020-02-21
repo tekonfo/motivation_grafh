@@ -1,16 +1,14 @@
 <template>
   <svg
-    :width="width || '100%'" 
-    :height="height || '25%'"
+    :width="'100%'" 
+    :height="'100%'"
     :viewBox="viewBox"
   >
     <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
     <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
-    <PathLine ref="path" v-bind="{smooth, value, boundary, radius, id, max, min, points}"></PathLine>
-    <Points v-bind="{smooth, boundary, radius, id, max, min, points}"></Points>
+    <PathLine ref="path" v-bind="{smooth, radius, id, points}"></PathLine>
+    <Points v-bind="{boundary, points}"></Points>
   </svg>
-
-
 </template>
 
 <script>
@@ -24,36 +22,17 @@
     components: {
       PathLine, Gradient, VerticalAxis, Points
     },
+
     props: {
       value: {
         type: Array,
         required: true
       },
-      autoDraw: Boolean,
-      autoDrawDuration: {
-        type: Number,
-        default: 2000
-      },
-      autoDrawEasing: {
-        type: String,
-        default: 'ease'
-      },
       gradient: {
         type: Array,
         default: () => ['#000']
       },
-      gradientDirection: {
-        type: String,
-        default: 'top'
-      },
-      max: {
-        type: Number,
-        default: -Infinity
-      },
-      min: {
-        type: Number,
-        default: Infinity
-      },
+      selectedId: Number,
       height: Number,
       width: Number,
       radius: {
@@ -61,7 +40,6 @@
         default: 10
       },
       isMove: Boolean,
-      selectedId: Number,
       smooth: Boolean
     },
 
@@ -75,7 +53,11 @@
         padding: {
           x: 80,
           y: 40
-        }
+        },
+        autoDraw: true,
+        autoDrawDuration: 2000,
+        autoDrawEasing: 'ease',
+        gradientDirection: 'top',
       }
     },
 
@@ -88,44 +70,37 @@
         maxX: this.viewWidth - this.padding.x,
         maxY: this.viewHeight - this.padding.y
       }
-      const maxMin = { max: this.max, min: this.min }
-      this.points = genPoints(this.value, this.boundary, maxMin)
-
-      const {
-        width,
-        height
-      } = this
-
-      const props = this.$props
-
-      props.boundary = this.boundary
+    
+      this.points = genPoints(this.value, this.boundary)
       this.id = 'vue-trend-' + this._uid
-      props.height = height
-      props.width = width
-      props.points = this.points
     },
 
-    mounted: function () {
+    mounted: function mounted () {
+      // var pHeight = this.$el.parentNode
+      // console.log(pHeight.clientHeight)
       const path = this.$refs.path.$el
       const length = path.getTotalLength()
 
-      path.style.transition = 'none'
-      path.style.strokeDasharray = length + ' ' + length
-      path.style.strokeDashoffset = Math.abs(
-        length - (this.lastLength || 0)
-      )
-      path.getBoundingClientRect()
-      path.style.transition = `stroke-dashoffset ${
-        this.autoDrawDuration
-      }ms ${this.autoDrawEasing}`
-      path.style.strokeDashoffset = 0
+      this.setPathStyle(path, length)
+
       this.lastLength = length
     },
 
-    method: {
+    methods: {
       changePoint: function (point) {
-        console.log('trend.js のchangePointが起動された')
         this.$emit('changePoint', point)
+      },
+      setPathStyle: function (path, length) {
+        path.style.transition = 'none'
+        path.style.strokeDasharray = length + ' ' + length
+        path.style.strokeDashoffset = Math.abs(
+          length - (this.lastLength || 0)
+        )
+        path.getBoundingClientRect()
+        path.style.transition = `stroke-dashoffset ${
+          this.autoDrawDuration
+        }ms ${this.autoDrawEasing}`
+        path.style.strokeDashoffset = 0
       }
     },
 
@@ -144,9 +119,7 @@
             if (this.$isServer || !this.$refs.path || !this.autoDraw) {
               return
             }
-
-            const maxMin = { max: this.max, min: this.min }
-            this.points = genPoints(this.value, this.boundary, maxMin)
+            this.points = genPoints(this.value, this.boundary)
           })
         }
       }

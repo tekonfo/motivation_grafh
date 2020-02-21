@@ -6,8 +6,7 @@ import { checkCollinear, getDistance, moveTo } from './math'
  * @param  {object}             boundary
  * @return {object[]}
  */
-export function genPoints (arr, { minX, minY, maxX, maxY }, { max, min }) {
-  console.log(max, min)
+export function genPoints (arr, { minX, minY, maxX, maxY }) {
   const arrX = arr.map((value) => { return value.x })
   const gridX = (maxX - minX) / (Math.max(...arrX, 0))
   const gridY = (maxY - minY) / 100
