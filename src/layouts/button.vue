@@ -6,6 +6,7 @@
       fab
       fixed
       right
+      @click="$emit('upDialog')"
     >
       <v-icon>mdi-plus</v-icon>
     </v-btn>

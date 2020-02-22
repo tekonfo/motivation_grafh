@@ -44,25 +44,55 @@
               </v-card-actions>
             </v-card>
           </v-col>
-
-          <v-col md="6" sm="6">
-            <v-card>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title class="headline mb-1"><input v-model="x"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-card-actions>
-                <v-btn @click="addPoint(x)">追加</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
         
         </v-row>
       </v-container>
     </v-content>
 
-    <Button></Button>
+    <Button @upDialog="dialog = true"></Button>
+
+    <v-dialog
+      v-model="dialog"
+      width="800px"
+    >
+      <v-card>
+        <v-card-title>
+          出来事追加
+        </v-card-title>
+        <v-container>
+          <v-row class="mx-2">
+            <v-col cols="12">
+              <v-subheader class="pl-0">年齢</v-subheader>
+              <v-slider
+                v-model="x"
+                thumb-label
+                label="いつ？"
+                :rules="[v => pointsX.indexOf(v) === -1 || '既に選択されています',]"
+              ></v-slider>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                prepend-icon="mdi-mail"
+                placeholder="何が起きた？？？"
+                v-model="text"
+              />
+            </v-col>
+          </v-row>
+        </v-container>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            text
+            color="primary"
+            @click="dialog = false"
+          >Cancel</v-btn>
+          <v-btn
+            text
+            @click="addPoint()"
+          >Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -72,6 +102,7 @@
   import Button from './layouts/button'
   import Trend from './components/trend'
   import Controll from './components/controll'
+
   export default {
     name: 'App',
 
@@ -80,15 +111,21 @@
       Controll,
       Navigation,
       Header,
-      Button
+      Button,
     },
 
     data: () => ({
       x: 0,
+      text: "",
       isMove: false,
       selecetedId: 0,
       points: [],
-      gradient: []
+      gradient: [],
+      dialog: false,
+      value: 30,
+      rules: [
+        v => v <= 40 || 'Only 40 in stock',
+      ],
     }),
     created () {
       this.points = [
@@ -107,15 +144,24 @@
         const index = this.points.findIndex((v) => v.originX === originX)
         this.points.splice(index, 1)
       },
-      addPoint: function (originX) {
-        const newPoint = { x: 0, y: 0, originX: originX, originY: 50, text: '' }
-        const index = this.points.findIndex((v) => v.originX > originX)
+      addPoint: function () {
+        const newPoint = { x: 0, y: 0, originX: this.x, originY: 50, text: this.text }
+        const index = this.points.findIndex((v) => v.originX > this.x)
         this.points.splice(index, 0, newPoint)
+        this.dialog = false
       },
       changePoint: function (point) {
         const index = this.points.findIndex((v) => v.originX === point.originX)
         this.points.splice(index, 1, point)
       },
+    },
+    computed: {
+      pointsX: function () {
+        var pointsX = this.points.flatMap(function(point){
+          return [ point.originX ]
+        })
+        return pointsX
+      }
     }
   };
 </script>
