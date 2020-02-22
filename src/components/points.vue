@@ -33,6 +33,8 @@
 </template>
 
 <script>
+  import { toOriginY } from '../helpers/path'
+
   export default {
     props: ['boundary', 'points'],
 
@@ -78,18 +80,16 @@
         }
         this.beforeMouseY = mouseY
         var tempY = dy + Number(this.points[this.selectedId].y)
-        if (tempY > 0) this.points[this.selectedId].y = tempY
-        // 親イベントを発火させる
+        if (tempY > 0 && tempY > this.boundary.minY && tempY < this.boundary.maxY) this.points[this.selectedId].y = tempY
         event.preventDefault()
       },
       // ポイントの値の変更を行う
       changePoint: function () {
-        console.log('points.vueのchengePointが起動された')
-        const point = {
-          x: this.selectedId,
-          y: this.points[this.selectedId].y,
-          text: this.points[this.selectedId].text
+        if (this.selectedId === -1){
+          return
         }
+        var point = this.points[this.selectedId]
+        point.originY = toOriginY(point.y, {minY: this.boundary.minY, maxY: this.boundary.maxY})
         this.$emit('changePoint', point)
       },
       // マウスのクリックが終わった段階で初期化

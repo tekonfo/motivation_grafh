@@ -6,8 +6,8 @@
   >
     <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
     <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
-    <PathLine ref="path" v-bind="{smooth, radius, id, points}"></PathLine>
-    <Points v-bind="{boundary, points}"></Points>
+    <PathLine ref="path" v-bind="{path, id}"></PathLine>
+    <Points v-bind="{boundary, points}" @changePoint="changePoint"></Points>
   </svg>
 </template>
 
@@ -16,7 +16,7 @@
   import Gradient from './gradient'
   import VerticalAxis from './vartical'
   import Points from './points'
-  import { genPoints } from '../helpers/path'
+  import { genPoints, genPath } from '../helpers/path'
 
   export default {
     components: {
@@ -45,6 +45,7 @@
 
     data: function () {
       return {
+        path: "",
         id: "",
         points: [],
         boundary: [],
@@ -62,8 +63,8 @@
     },
 
     created: function () {
-      this.viewWidth = this.width || 300
-      this.viewHeight = this.height || 75
+      this.viewWidth = this.width
+      this.viewHeight = this.height
       this.boundary = {
         minX: this.padding.x,
         minY: this.padding.y,
@@ -72,21 +73,21 @@
       }
     
       this.points = genPoints(this.value, this.boundary)
+      this.path = genPath(this.points, this.smooth ? this.radius : 0)
       this.id = 'vue-trend-' + this._uid
     },
 
     mounted: function mounted () {
-      // var pHeight = this.$el.parentNode
-      // console.log(pHeight.clientHeight)
-      const path = this.$refs.path.$el
-      const length = path.getTotalLength()
-
-      this.setPathStyle(path, length)
-
-      this.lastLength = length
+      // this.changePath()
     },
 
     methods: {
+      changePath: function () {
+        const path = this.$refs.path.$el
+        const length = path.getTotalLength()
+        this.setPathStyle(path, length)
+        this.lastLength = length
+      },
       changePoint: function (point) {
         this.$emit('changePoint', point)
       },
@@ -120,6 +121,11 @@
               return
             }
             this.points = genPoints(this.value, this.boundary)
+            
+            this.path = genPath(this.points, this.smooth ? this.radius : 0)
+            // これ消すとオシャン描画になる
+            // ゆったりとした描画になるけどバグ多めなのでとりあえず無視
+            // this.changePath()
           })
         }
       }

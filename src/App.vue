@@ -16,6 +16,7 @@
               :width="1000"
               :isMove="isMove"
               :selectedId="selecetedId"
+              @changePoint="changePoint"
               >
             </trend>
           </v-col>
@@ -26,13 +27,13 @@
             ></controll>
           </v-col>
       
-          <v-col md="6" sm="6" v-for="point in points" v-bind:key="'input-' + point.x">
+          <v-col md="6" sm="6" v-for="point in points" v-bind:key="'input-' + point.originX">
             <v-card
               outlined
             >
               <v-list-item>
                 <v-list-item-content>
-                  <v-list-item-title class="headline mb-1">{{ point.x }}</v-list-item-title>
+                  <v-list-item-title class="headline mb-1">{{ point.originX }}</v-list-item-title>
                   <v-list-item-subtitle>
                     <input v-model="point.text">
                   </v-list-item-subtitle>
@@ -91,32 +92,30 @@
     }),
     created () {
       this.points = [
-        { x: 0, y: 0, text: '誕生' },
-        { x: 1, y: 100, text: '誕生' },
-        { x: 5, y: 50, text: '誕生' },
-        { x: 10, y: 10, text: '誕生' },
-        { x: 15, y: 30, text: '誕生' },
-        { x: 20, y: 0, text: '誕生' },
-        { x: 23, y: 8, text: '誕生' }
+        { x: 0, y: 0, originX: 0,originY: 0,text: '誕生' },
+        { x: 0, y: 0, originX: 1,originY: 100, text: '誕生' },
+        { x: 0, y: 0, originX: 5,originY: 50,text: '誕生' },
+        { x: 0, y: 0, originX: 10,originY: 10,text: '誕生' },
+        { x: 0, y: 0, originX: 15,originY: 30,text: '誕生' },
+        { x: 0, y: 0, originX: 20,originY: 0,text: '誕生' },
+        { x: 0, y: 0, originX: 23,originY: 8,text: '誕生' }
       ]
       this.gradient = ['#6fa8dc', '#42b983', '#2c3e50']
     },
     methods: {
-      deletePoint: function (x) {
-        const index = this.points.findIndex((v) => v.x === x)
+      deletePoint: function (originX) {
+        const index = this.points.findIndex((v) => v.originX === originX)
         this.points.splice(index, 1)
       },
-      addPoint: function (x) {
-        const newPoint = { x: x, y: 50, text: '' }
-        const index = this.points.findIndex((v) => v.x > x)
+      addPoint: function (originX) {
+        const newPoint = { x: 0, y: 0, originX: originX, originY: 50, text: '' }
+        const index = this.points.findIndex((v) => v.originX > originX)
         this.points.splice(index, 0, newPoint)
       },
-      changePoint: function (x, y, text) {
-        const point = { x: x, y: y, text: text }
-        const index = this.points.findIndex((v) => v.x === x)
-        // 置き換え
+      changePoint: function (point) {
+        const index = this.points.findIndex((v) => v.originX === point.originX)
         this.points.splice(index, 1, point)
-      }
+      },
     }
   };
 </script>
