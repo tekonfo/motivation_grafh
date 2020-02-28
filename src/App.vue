@@ -147,7 +147,12 @@
       addPoint: function () {
         const newPoint = { x: 0, y: 0, originX: this.x, originY: 50, text: this.text }
         const index = this.points.findIndex((v) => v.originX > this.x)
-        this.points.splice(index, 0, newPoint)
+        // ない場合、末尾に挿入
+        if (index === -1) {
+          this.points.splice(this.points.length, 0, newPoint)
+        } else {
+          this.points.splice(index, 0, newPoint)
+        }
         this.dialog = false
       },
       changePoint: function (point) {

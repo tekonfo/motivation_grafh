@@ -10,14 +10,14 @@
     @mouseleave="closeText($event)"
     >
     </circle>
-    
-    <text v-for="(d, index) in points" v-bind:key="'text-' + index" 
-    :x="d.x + 10" 
-    :y="d.y" 
-    fill="black"  
-    v-show="index === showTextId"
-    >{{ d.text }}
-    </text>
+
+    <Bubble 
+    v-for="(point, index) in points" v-bind:key="'bubble-' + index" 
+    :point="point"
+    :index="index"
+    :allTextShow="allTextShow"
+    :showTextId="showTextId"
+    ></Bubble>
     
     <text v-for="(d, index) in points" v-bind:key="'axis-' + index" 
     :x="d.x"
@@ -34,9 +34,14 @@
 
 <script>
   import { toOriginY } from '../helpers/path'
+  import Bubble from './speechBubble'
 
   export default {
-    props: ['boundary', 'points'],
+    props: ['boundary', 'points', 'allTextShow'],
+
+    components: {
+      Bubble
+    },
 
     data: function () {
       return {

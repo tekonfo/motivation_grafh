@@ -1,14 +1,20 @@
 <template>
-  <svg
-    :width="'100%'" 
-    :height="'100%'"
-    :viewBox="viewBox"
-  >
-    <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
-    <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
-    <PathLine ref="path" v-bind="{path, id}"></PathLine>
-    <Points v-bind="{boundary, points}" @changePoint="changePoint"></Points>
-  </svg>
+  <div>
+    <svg
+      :width="'100%'" 
+      :height="'100%'"
+      :viewBox="viewBox"
+      ref="motivationGraphSvg"
+    >
+      <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
+      <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
+      <PathLine ref="path" v-bind="{path, id}"></PathLine>
+      <Points v-bind="{boundary, points, allTextShow}" @changePoint="changePoint"></Points>
+    </svg>
+    <v-switch v-model="allTextShow" label="テキスト全表示"></v-switch>
+    <v-btn @click="save">画像出力</v-btn>
+    <img :src="imageSrc" id="converted-image">
+  </div>
 </template>
 
 <script>
@@ -17,6 +23,7 @@
   import VerticalAxis from './vartical'
   import Points from './points'
   import { genPoints, genPath } from '../helpers/path'
+  import { svg2png } from '../helpers/svg2png'
 
   export default {
     components: {
@@ -59,6 +66,8 @@
         autoDrawDuration: 2000,
         autoDrawEasing: 'ease',
         gradientDirection: 'top',
+        allTextShow: true,
+        imageSrc: ""
       }
     },
 
@@ -102,6 +111,13 @@
           this.autoDrawDuration
         }ms ${this.autoDrawEasing}`
         path.style.strokeDashoffset = 0
+      },
+      save: function () {
+        var data = svg2png(this.$refs['motivationGraphSvg'], function() {
+          }, function(error) {
+            console.log(error)
+          })
+        this.imageSrc = data
       }
     },
 
