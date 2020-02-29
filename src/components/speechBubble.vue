@@ -1,11 +1,18 @@
 <template>
-  <text  
-    :x="point.x + 10"
-    :y="point.y"
-    fill="black"  
-    v-show="index === showTextId || allTextShow"
-    >{{ point.text }}
-  </text>
+  <g>
+    <text  
+      :x="point.x + 10"
+      :y="point.y"
+      fill="black"  
+      v-show="index === showTextId || allTextShow"
+      >{{ point.text }}
+    </text>
+    <!-- <path 
+      d="M615.1,493c5.1,3.5,11.8-0.9,10.7-7l-7.7-40.4h72.1c49.6,0,89.8-40.2,89.8-89.8V102.5
+		c0-49.6-40.2-89.8-89.8-89.8H109.8C60.2,12.7,20,52.9,20,102.5v253.3c0,49.6,40.2,89.8,89.8,89.8h436L615.1,493z">
+    </path> -->
+  </g>
+
 </template>
 
 <script>

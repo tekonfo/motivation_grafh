@@ -27,7 +27,7 @@
             ></controll>
           </v-col>
       
-          <v-col md="6" sm="6" v-for="point in points" v-bind:key="'input-' + point.originX">
+          <v-col cols="12" lg="6" md="12" sm="12" v-for="point in points" v-bind:key="'input-' + point.originX">
             <v-card
               outlined
             >
@@ -46,6 +46,11 @@
           </v-col>
         
         </v-row>
+
+        <div class="twitter_share">
+          <button @click="twitterShare">ツイッターでシェアする</button>
+        </div>
+
       </v-container>
     </v-content>
 
@@ -139,6 +144,7 @@
       ]
       this.gradient = ['#6fa8dc', '#42b983', '#2c3e50']
     },
+
     methods: {
       deletePoint: function (originX) {
         const index = this.points.findIndex((v) => v.originX === originX)
@@ -159,7 +165,12 @@
         const index = this.points.findIndex((v) => v.originX === point.originX)
         this.points.splice(index, 1, point)
       },
+      twitterShare(){
+        var shareURL = 'https://twitter.com/intent/tweet?text=' + "ツイッターシェアボタンのサンプルコード" + "%20%23あめねこサンプルコード集" + '&url=' + "https://code.ameneko.com/twitter-share";  
+        location.href = shareURL
+      }
     },
+
     computed: {
       pointsX: function () {
         var pointsX = this.points.flatMap(function(point){
