@@ -5,6 +5,7 @@
       :height="'100%'"
       :viewBox="viewBox"
       ref="motivationGraphSvg"
+      style="background-color:#FFFFFF;"
     >
       <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
       <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
@@ -23,7 +24,7 @@
   import VerticalAxis from './vartical'
   import Points from './points'
   import { genPoints, genPath } from '../helpers/path'
-  import { svg2png } from '../helpers/svg2png'
+  import * as svg from 'save-svg-as-png';
 
   export default {
     components: {
@@ -113,11 +114,8 @@
         path.style.strokeDashoffset = 0
       },
       save: function () {
-        var data = svg2png(this.$refs['motivationGraphSvg'], function() {
-          }, function(error) {
-            console.log(error)
-          })
-        this.imageSrc = data
+        svg.svgAsPngUri(this.$refs['motivationGraphSvg']).then(
+          uri => this.imageSrc = uri);
       }
     },
 
