@@ -35,7 +35,7 @@
                 <v-list-item-content>
                   <v-list-item-title class="headline mb-1">{{ point.originX }}</v-list-item-title>
                   <v-list-item-subtitle>
-                    <input v-model="point.text">
+                    <input v-model="point.text" @change="savePoint">
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
@@ -108,6 +108,16 @@
   import Trend from './components/trend'
   import Controll from './components/controll'
 
+  const templatePoints = [
+        { x: 0, y: 0, originX: 0,originY: 0,text: '誕生' },
+        { x: 0, y: 0, originX: 1,originY: 100, text: '誕生' },
+        { x: 0, y: 0, originX: 5,originY: 50,text: '誕生' },
+        { x: 0, y: 0, originX: 10,originY: 10,text: '誕生' },
+        { x: 0, y: 0, originX: 15,originY: 30,text: '誕生' },
+        { x: 0, y: 0, originX: 20,originY: 0,text: '誕生' },
+        { x: 0, y: 0, originX: 23,originY: 8,text: '誕生' }
+      ]
+
   export default {
     name: 'App',
 
@@ -133,15 +143,12 @@
       ],
     }),
     created () {
-      this.points = [
-        { x: 0, y: 0, originX: 0,originY: 0,text: '誕生' },
-        { x: 0, y: 0, originX: 1,originY: 100, text: '誕生' },
-        { x: 0, y: 0, originX: 5,originY: 50,text: '誕生' },
-        { x: 0, y: 0, originX: 10,originY: 10,text: '誕生' },
-        { x: 0, y: 0, originX: 15,originY: 30,text: '誕生' },
-        { x: 0, y: 0, originX: 20,originY: 0,text: '誕生' },
-        { x: 0, y: 0, originX: 23,originY: 8,text: '誕生' }
-      ]
+      const pointsJson = localStorage.getItem('points')
+      if (pointsJson) {
+        this.points = JSON.parse(pointsJson)
+      }else{
+        this.points = templatePoints
+      }
       this.gradient = ['#6fa8dc', '#42b983', '#2c3e50']
     },
 
@@ -149,6 +156,10 @@
       deletePoint: function (originX) {
         const index = this.points.findIndex((v) => v.originX === originX)
         this.points.splice(index, 1)
+        this.savePoint()
+      },
+      savePoint: function () {
+        localStorage.setItem('points', JSON.stringify(this.points))
       },
       addPoint: function () {
         const newPoint = { x: 0, y: 0, originX: this.x, originY: 50, text: this.text }
@@ -160,10 +171,12 @@
           this.points.splice(index, 0, newPoint)
         }
         this.dialog = false
+        this.savePoint()
       },
       changePoint: function (point) {
         const index = this.points.findIndex((v) => v.originX === point.originX)
         this.points.splice(index, 1, point)
+        this.savePoint()
       },
       twitterShare(){
         var shareURL = 'https://twitter.com/intent/tweet?text=' + "ツイッターシェアボタンのサンプルコード" + "%20%23あめねこサンプルコード集" + '&url=' + "https://code.ameneko.com/twitter-share";  
