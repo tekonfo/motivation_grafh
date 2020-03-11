@@ -14,6 +14,26 @@
     </svg>
     <v-switch v-model="allTextShow" label="テキスト全表示"></v-switch>
     <v-btn @click="save">画像出力</v-btn>
+    <!-- <v-dialog v-model="dialog">
+      <template v-slot:activator="{ on }">
+        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Image</span>
+        </v-card-title>
+        <v-card-text>
+
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="dialog = false">Twitter</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">Facebook</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">SaveImage</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog> -->
+
     <img :src="imageSrc" id="converted-image">
   </div>
 </template>
