@@ -14,6 +14,7 @@
     <Bubble 
     v-for="(point, index) in points" v-bind:key="'bubble-' + index" 
     :point="point"
+    :maxX="boundary.maxX"
     :index="index"
     :allTextShow="allTextShow"
     :showTextId="showTextId"
@@ -27,6 +28,8 @@
     fill="black" 
     >{{ d.originX }}
     </text>
+
+    
     
 
   </g>

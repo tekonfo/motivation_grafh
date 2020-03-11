@@ -36,23 +36,25 @@
                   <v-list-item-title class="headline mb-1">{{ point.originX }}</v-list-item-title>
                   <v-list-item-subtitle>
                     <input v-model="point.text" @change="savePoint">
+                    <input v-model="point.secondText" @change="savePoint">
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
               <v-card-actions>
-                <v-btn @click="deletePoint(point.x)">削除</v-btn>
+                <v-btn @click="deletePoint(point.originX)">削除</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
         
         </v-row>
-
-        <div class="twitter_share">
-          <button @click="twitterShare">ツイッターでシェアする</button>
-        </div>
-
       </v-container>
     </v-content>
+
+    <button @click="clearPoint">出来事を削除する</button>
+
+    <div class="twitter_share">
+      <button @click="twitterShare">ツイッターでシェアする</button>
+    </div>
 
     <Button @upDialog="dialog = true"></Button>
 
@@ -78,8 +80,15 @@
             <v-col cols="12">
               <v-text-field
                 prepend-icon="mdi-mail"
-                placeholder="何が起きた？？？"
+                placeholder="1行目"
                 v-model="text"
+              />
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                prepend-icon="mdi-mail"
+                placeholder="2行目"
+                v-model="secondText"
               />
             </v-col>
           </v-row>
@@ -109,13 +118,13 @@
   import Controll from './components/controll'
 
   const templatePoints = [
-        { x: 0, y: 0, originX: 0,originY: 0,text: '誕生' },
-        { x: 0, y: 0, originX: 1,originY: 100, text: '誕生' },
-        { x: 0, y: 0, originX: 5,originY: 50,text: '誕生' },
-        { x: 0, y: 0, originX: 10,originY: 10,text: '誕生' },
-        { x: 0, y: 0, originX: 15,originY: 30,text: '誕生' },
-        { x: 0, y: 0, originX: 20,originY: 0,text: '誕生' },
-        { x: 0, y: 0, originX: 23,originY: 8,text: '誕生' }
+        { x: 0, y: 0, originX: 0,originY: 50, text: '誕生', secondText: ''  },
+        { x: 0, y: 0, originX: 12,originY: 80, text: '小学校時代。', secondText: '毎日楽しい'   },
+        { x: 0, y: 0, originX: 13,originY: 30, text: '中学校・バスケ部入部　顧問が怖くて毎日震える', secondText: '毎日楽しい' },
+        { x: 0, y: 0, originX: 15,originY: 100, text: '高校第一志望入学・初めの彼女ができる' , secondText: '毎日楽しい'},
+        { x: 0, y: 0, originX: 18,originY: 10, text: '第一志望に落ちる。。。\n浪人生活突入', secondText: '毎日楽しい' },
+        { x: 0, y: 0, originX: 19,originY: 100, text: '第一志望合格！！！華の大学生活へ', secondText: '毎日楽しい' },
+        { x: 0, y: 0, originX: 23,originY: 80, text: 'Web開発にのめり込む' },
       ]
 
   export default {
@@ -132,6 +141,7 @@
     data: () => ({
       x: 0,
       text: "",
+      secondText: "",
       isMove: false,
       selecetedId: 0,
       points: [],
@@ -149,6 +159,7 @@
       }else{
         this.points = templatePoints
       }
+      this.points = templatePoints
       this.gradient = ['#6fa8dc', '#42b983', '#2c3e50']
     },
 
@@ -158,11 +169,15 @@
         this.points.splice(index, 1)
         this.savePoint()
       },
+      clearPoint: function () {
+        this.points = []
+        localStorage.removeItem('points')
+      },
       savePoint: function () {
         localStorage.setItem('points', JSON.stringify(this.points))
       },
       addPoint: function () {
-        const newPoint = { x: 0, y: 0, originX: this.x, originY: 50, text: this.text }
+        const newPoint = { x: 0, y: 0, originX: this.x, originY: 50, text: this.text, secondText: this.secondText }
         const index = this.points.findIndex((v) => v.originX > this.x)
         // ない場合、末尾に挿入
         if (index === -1) {
