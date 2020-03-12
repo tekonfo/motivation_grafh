@@ -40,21 +40,38 @@ export default {
     }
   },
   mounted: function () {
-    const targetElement = this.$el;
-    const targetEl = targetElement.getBBox()
-    const endX = targetEl.x + targetEl.width
+    // const targetElement = this.$el;
+    // const targetEl = targetElement.getBBox()
+    // const endX = targetEl.x + targetEl.width
 
-    if (endX >= this.maxX){
-      this.isOverWidth = true
-    }
+    // if (endX >= this.maxX){
+    //   this.isOverWidth = true
+    // }
   },
   computed: {
     endOrStart: function () {
-     return this.isOverWidth ? 'end' : 'start' 
+     return this.point.isShowTextRight ? 'start'  :  'end'
     },
     changeStartX: function () {
-      return this.isOverWidth ? this.point.x - 10  : this.point.x + 10
+      return this.point.isShowTextRight ? this.point.x + 10  : this.point.x - 10
     }
-  }
+  },
+  watch: {
+      // point: {
+      //   immediate: true,
+      //   deep: true,
+      //   handler () {
+      //     this.$nextTick(() => {
+      //       const targetElement = this.$el;
+      //       const targetEl = targetElement.getBBox()
+      //       const endX = targetEl.x + targetEl.width
+
+      //       if (endX >= this.maxX){
+      //         this.isOverWidth = true
+      //       }
+      //     })
+      //   }
+      // }
+    }
 }
 </script>

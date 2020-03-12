@@ -6,9 +6,10 @@
     r="5" 
     :fill="index===selectedId ? 'red' : 'black'"
     @mousedown="setId($event, index)"
-    @mouseover="showText($event, index)"
-    @mouseleave="closeText($event)"
+    @touchstart="setId($event, index)"
     >
+    <!-- @mouseover="showText($event, index)"
+    @mouseleave="closeText($event)" -->
     </circle>
 
     <Bubble 
@@ -82,15 +83,26 @@
         if (!this.isMove) return
         console.log('move')
         var mouseY = event.offsetY
-        var dy = 0
-        if (this.beforeMouseY) {
-          dy = mouseY - this.beforeMouseY
-        }
-        this.beforeMouseY = mouseY
-        var tempY = dy + Number(this.points[this.selectedId].y)
-        if (tempY > 0 && tempY > this.boundary.minY && tempY < this.boundary.maxY) this.points[this.selectedId].y = tempY
+        this.calcY(mouseY)
         event.preventDefault()
       },
+      touchMove: function (event) {
+        if (!this.isMove) return
+        console.log('move')
+        var mouseY = event.changedTouches[0].pageY;
+        this.calcY(mouseY)
+        event.preventDefault()
+      },
+      calcY: function (y) {
+var dy = 0
+        if (this.beforeMouseY) {
+          dy = y - this.beforeMouseY
+        }
+        this.beforeMouseY = y
+        var tempY = dy + Number(this.points[this.selectedId].y)
+        if (tempY > 0 && tempY > this.boundary.minY && tempY < this.boundary.maxY) this.points[this.selectedId].y = tempY
+      }
+      ,
       // ポイントの値の変更を行う
       changePoint: function () {
         if (this.selectedId === -1){
@@ -117,12 +129,17 @@
       console.log('MOUNT LISTENER ON')
       document.addEventListener('mouseup', this.mouseUp)
       document.addEventListener('mousemove', this.move)
+      document.addEventListener('touchend', this.mouseUp)
+      document.addEventListener('touchmove', this.touchMove, {passive: false})
+      // document.addEventListener('touchstart', this.mouseUp)
     },
 
     beforeDestroy () {
       console.log('MOUNT LISTENER OFF')
-      document.removeEventListener('mouseup', this.mouseUp)
-      document.removeEventListener('mousemove', this.move)
+      document.addEventListener('mouseup', this.mouseUp)
+      document.addEventListener('mousemove', this.move)
+      document.addEventListener('touchend', this.mouseUp)
+      document.addEventListener('touchmove', this.move)
     }
   }
 </script>

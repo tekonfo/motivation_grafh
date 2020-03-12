@@ -4,10 +4,11 @@
     <Navigation></Navigation>
 
     <Header></Header>
-
+    
     <v-content>
       <v-container class="fill-height" fluid >
         <v-row>
+          
           <v-col ref="parent" cols="12">
             <trend
               :value="points"
@@ -17,40 +18,60 @@
               :isMove="isMove"
               :selectedId="selecetedId"
               @changePoint="changePoint"
+              @clearPoint="clearPoint"
               >
             </trend>
           </v-col>
 
           <v-col cols="12">
-            <controll
-              :points="points"
-            ></controll>
+            <controll></controll>
           </v-col>
       
           <v-col cols="12" lg="6" md="12" sm="12" v-for="point in points" v-bind:key="'input-' + point.originX">
             <v-card
               outlined
             >
+              <v-card-actions>
+                <v-list-item class="grow">
+                  <v-list-item-content>
+                    <v-list-item-title>{{ point.originX }}才</v-list-item-title>
+                  </v-list-item-content>
+                  <v-btn 
+                    icon
+                    @click="deletePoint(point.originX)"
+                  >
+                    <v-icon large>mdi-delete-outline</v-icon>
+                  </v-btn>
+                </v-list-item>  
+              </v-card-actions>
               <v-list-item>
+            
                 <v-list-item-content>
-                  <v-list-item-title class="headline mb-1">{{ point.originX }}</v-list-item-title>
+                
                   <v-list-item-subtitle>
-                    <input v-model="point.text" @change="savePoint">
-                    <input v-model="point.secondText" @change="savePoint">
+                    <v-text-field
+                      v-model="point.text"
+                      @change="savePoint"
+                      label="1行目"
+                    />
+                    <v-text-field
+                      v-model="point.secondText"
+                      @change="savePoint"
+                      label="2行目"
+                    />
+                    <v-switch 
+                      v-model="point.isShowTextRight" 
+                      label="テキスト右側表示" 
+                    />
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-card-actions>
-                <v-btn @click="deletePoint(point.originX)">削除</v-btn>
-              </v-card-actions>
             </v-card>
           </v-col>
         
         </v-row>
       </v-container>
     </v-content>
-
-    <button @click="clearPoint">出来事を削除する</button>
 
     <div class="twitter_share">
       <button @click="twitterShare">ツイッターでシェアする</button>
@@ -118,13 +139,13 @@
   import Controll from './components/controll'
 
   const templatePoints = [
-        { x: 0, y: 0, originX: 0,originY: 50, text: '誕生', secondText: ''  },
-        { x: 0, y: 0, originX: 12,originY: 80, text: '小学校時代。', secondText: '毎日楽しい'   },
-        { x: 0, y: 0, originX: 13,originY: 30, text: '中学校・バスケ部入部　顧問が怖くて毎日震える', secondText: '毎日楽しい' },
-        { x: 0, y: 0, originX: 15,originY: 100, text: '高校第一志望入学・初めの彼女ができる' , secondText: '毎日楽しい'},
-        { x: 0, y: 0, originX: 18,originY: 10, text: '第一志望に落ちる。。。\n浪人生活突入', secondText: '毎日楽しい' },
-        { x: 0, y: 0, originX: 19,originY: 100, text: '第一志望合格！！！華の大学生活へ', secondText: '毎日楽しい' },
-        { x: 0, y: 0, originX: 23,originY: 80, text: 'Web開発にのめり込む' },
+        { x: 0, y: 0, originX: 0,originY: 50, text: '誕生', secondText: '', isShowTextRight: true  },
+        { x: 0, y: 0, originX: 12,originY: 80, text: '小学校時代。', secondText: '毎日楽しい', isShowTextRight: true   },
+        { x: 0, y: 0, originX: 13,originY: 30, text: '中学校・バスケ部入部　顧問が怖くて毎日震える', secondText: '毎日楽しい', isShowTextRight: true },
+        { x: 0, y: 0, originX: 15,originY: 100, text: '高校第一志望入学・初めの彼女ができる' , secondText: '毎日楽しい', isShowTextRight: true},
+        { x: 0, y: 0, originX: 18,originY: 10, text: '第一志望に落ちる。。。\n浪人生活突入', secondText: '毎日楽しい' , isShowTextRight: true},
+        { x: 0, y: 0, originX: 19,originY: 100, text: '第一志望合格！！！華の大学生活へ', secondText: '毎日楽しい', isShowTextRight: true },
+        { x: 0, y: 0, originX: 23,originY: 80, text: 'Web開発にのめり込む', isShowTextRight: true },
       ]
 
   export default {

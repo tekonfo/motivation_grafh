@@ -1,5 +1,6 @@
 <template>
   <div>
+    <span v-touch="touchHandler">Tap Me</span>
     <svg
       :width="'100%'" 
       :height="'100%'"
@@ -14,25 +15,7 @@
     </svg>
     <v-switch v-model="allTextShow" label="テキスト全表示"></v-switch>
     <v-btn @click="save">画像出力</v-btn>
-    <!-- <v-dialog v-model="dialog">
-      <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="headline">Image</span>
-        </v-card-title>
-        <v-card-text>
-
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">Twitter</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false">Facebook</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false">SaveImage</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog> -->
+    <v-btn @click="clearPoint">全消去</v-btn>
 
     <img :src="imageSrc" id="converted-image">
   </div>
@@ -112,6 +95,9 @@
     },
 
     methods: {
+      touchHandler: function () {
+        console.log("test")
+      },
       changePath: function () {
         const path = this.$refs.path.$el
         const length = path.getTotalLength()
@@ -120,6 +106,9 @@
       },
       changePoint: function (point) {
         this.$emit('changePoint', point)
+      },
+      clearPoint: function () {
+        this.$emit('clearPoint')
       },
       setPathStyle: function (path, length) {
         path.style.transition = 'none'
@@ -155,8 +144,9 @@
               return
             }
             this.points = genPoints(this.value, this.boundary)
+
+            this.path = genPath(this.points, this.smooth ? this.radius : 0) 
             
-            this.path = genPath(this.points, this.smooth ? this.radius : 0)
             // これ消すとオシャン描画になる
             // ゆったりとした描画になるけどバグ多めなのでとりあえず無視
             // this.changePath()
