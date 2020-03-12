@@ -5,7 +5,7 @@
       color="blue darken-3"
       dark
     >
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar-nav-icon @click="drawer" />
     <v-toolbar-title
       style="width: 300px"
       class="ml-0 pl-4"
@@ -67,8 +67,12 @@
 <script>
 export default {
   data: () => ({
-    drawer: false,
     dialog: false
-  })
+  }),
+  methods: {
+    drawer: function() {
+      this.$emit('drawer');
+    }
+  }
 }
 </script>
