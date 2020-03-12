@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "firebase-tools": "^7.14.0",
+    "save-svg-as-png": "^1.4.17",
     "vue": "^2.6.11",
+    "vue2-touch-events": "^2.2.1",
     "vuetify": "^2.2.11"
   },
   "devDependencies": {

@@ -1,10 +1,12 @@
 <template>
   <div>
+    <span v-touch="touchHandler">Tap Me</span>
     <svg
       :width="'100%'" 
       :height="'100%'"
       :viewBox="viewBox"
       ref="motivationGraphSvg"
+      style="background-color:#FFFFFF;"
     >
       <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
       <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
@@ -13,6 +15,8 @@
     </svg>
     <v-switch v-model="allTextShow" label="テキスト全表示"></v-switch>
     <v-btn @click="save">画像出力</v-btn>
+    <v-btn @click="clearPoint">全消去</v-btn>
+
     <img :src="imageSrc" id="converted-image">
   </div>
 </template>
@@ -23,7 +27,7 @@
   import VerticalAxis from './vartical'
   import Points from './points'
   import { genPoints, genPath } from '../helpers/path'
-  import { svg2png } from '../helpers/svg2png'
+  import * as svg from 'save-svg-as-png';
 
   export default {
     components: {
@@ -91,6 +95,9 @@
     },
 
     methods: {
+      touchHandler: function () {
+        console.log("test")
+      },
       changePath: function () {
         const path = this.$refs.path.$el
         const length = path.getTotalLength()
@@ -99,6 +106,9 @@
       },
       changePoint: function (point) {
         this.$emit('changePoint', point)
+      },
+      clearPoint: function () {
+        this.$emit('clearPoint')
       },
       setPathStyle: function (path, length) {
         path.style.transition = 'none'
@@ -113,11 +123,8 @@
         path.style.strokeDashoffset = 0
       },
       save: function () {
-        var data = svg2png(this.$refs['motivationGraphSvg'], function() {
-          }, function(error) {
-            console.log(error)
-          })
-        this.imageSrc = data
+        svg.svgAsPngUri(this.$refs['motivationGraphSvg']).then(
+          uri => this.imageSrc = uri);
       }
     },
 
@@ -137,8 +144,9 @@
               return
             }
             this.points = genPoints(this.value, this.boundary)
+
+            this.path = genPath(this.points, this.smooth ? this.radius : 0) 
             
-            this.path = genPath(this.points, this.smooth ? this.radius : 0)
             // これ消すとオシャン描画になる
             // ゆったりとした描画になるけどバグ多めなのでとりあえず無視
             // this.changePath()
