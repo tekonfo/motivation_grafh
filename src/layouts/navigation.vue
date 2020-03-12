@@ -1,5 +1,6 @@
 <template>
   <v-navigation-drawer
+    :mini-variant= drawer
     :clipped="$vuetify.breakpoint.lgAndUp"
     app
   >
@@ -108,6 +109,7 @@ export default {
         { icon: 'mdi-cellphone-link', text: 'App downloads' },
         { icon: 'mdi-keyboard', text: 'Go to the old version' },
       ],
+      drawer: true
   })
 }
 </script>
