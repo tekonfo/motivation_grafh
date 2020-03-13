@@ -6,7 +6,6 @@
       :viewBox="viewBox"
       ref="motivationGraphSvg"
       style="background-color:#FFFFFF;"
-
     >
 
       <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
@@ -15,11 +14,28 @@
       <Points v-bind="{boundary, points, allTextShow}" @changePoint="changePoint" ref="point"></Points>
       
     </svg>
-    <v-switch v-model="allTextShow" label="テキスト全表示"></v-switch>
-    <v-btn @click="save">画像出力</v-btn>
-    <v-btn @click="clearPoint">全消去</v-btn>
 
-    <img :src="imageSrc" id="converted-image">
+    <v-bottom-navigation
+    grow
+    color="teal"
+    >
+      <v-switch v-model="allTextShow" label="text表示" />
+
+      <v-btn @click="clearPoint">
+        <span>全消去</span>
+        <v-icon>mdi-history</v-icon>
+      </v-btn>
+
+      <v-btn @click="save">
+        <span>画像出力</span>
+        <v-icon>mdi-image</v-icon>
+      </v-btn>
+
+      <v-btn>
+        <span>シェア</span>
+        <v-icon>mdi-twitter</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </div>
 </template>
 
@@ -94,18 +110,18 @@
 
     mounted: function () {
       console.log('MOUNT LISTENER ON')
-      this.$el.addEventListener('mouseup', this.$refs.point.mouseUp)
-      this.$el.addEventListener('mousemove', this.$refs.point.move)
-      this.$el.addEventListener('touchend', this.$refs.point.mouseUp)
-      this.$el.addEventListener('touchmove', this.$refs.point.touchMove, {passive: false})
+      this.$refs['motivationGraphSvg'].addEventListener('mouseup', this.$refs.point.mouseUp)
+      this.$refs['motivationGraphSvg'].addEventListener('mousemove', this.$refs.point.move)
+      this.$refs['motivationGraphSvg'].addEventListener('touchend', this.$refs.point.mouseUp)
+      this.$refs['motivationGraphSvg'].addEventListener('touchmove', this.$refs.point.touchMove, {passive: false})
     },
 
     deforeDestroy: function () {
       console.log('MOUNT LISTENER OFF')
-      document.removeEventListener('mouseup',this.$refs.point.mouseUp)
-      document.removeEventListener('mousemove', this.$refs.point.move)
-      document.removeEventListener('touchend', this.$refs.point.mouseUp)
-      document.removeEventListener('touchmove', this.$refs.point.touchMove)
+      this.$refs['motivationGraphSvg'].removeEventListener('mouseup',this.$refs.point.mouseUp)
+      this.$refs['motivationGraphSvg'].removeEventListener('mousemove', this.$refs.point.move)
+      this.$refs['motivationGraphSvg'].removeEventListener('touchend', this.$refs.point.mouseUp)
+      this.$refs['motivationGraphSvg'].removeEventListener('touchmove', this.$refs.point.touchMove)
     },
 
     methods: {
@@ -138,7 +154,8 @@
       },
       save: function () {
         svg.svgAsPngUri(this.$refs['motivationGraphSvg']).then(
-          uri => this.imageSrc = uri);
+          uri => this.$emit('outputImage', {url: uri})
+        );
       }
     },
 

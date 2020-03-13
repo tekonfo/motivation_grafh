@@ -4,6 +4,13 @@
     <Navigation :drawer="drawer"></Navigation>
 
     <Header @drawer="openClose"></Header>
+
+    <ImageDialog 
+      :imageDialog="imageDialog"
+      :imageUrl="imageUrl"
+      @cancel="imageDialog = !imageDialog"
+    />
+
     <v-content>
       <v-container class="fill-height" fluid >
         <v-row>
@@ -18,12 +25,9 @@
               :selectedId="selecetedId"
               @changePoint="changePoint"
               @clearPoint="clearPoint"
+              @outputImage="showImage"
               >
             </trend>
-          </v-col>
-
-          <v-col cols="12">
-            <controll></controll>
           </v-col>
 
           <v-col cols="12" lg="6" md="12" sm="12" v-for="point in points" v-bind:key="'input-' + point.originX">
@@ -131,7 +135,7 @@
   import Header from './layouts/header'
   import Button from './layouts/button'
   import Trend from './components/trend'
-  import Controll from './components/controll'
+  import ImageDialog from './components/imageDialog'
 
   const templatePoints = [
         { x: 0, y: 0, originX: 0,originY: 50, text: '誕生', secondText: '', isShowTextRight: true  },
@@ -148,13 +152,15 @@
 
     components: {
       Trend,
-      Controll,
       Navigation,
       Header,
       Button,
+      ImageDialog
     },
 
     data: () => ({
+      imageDialog: false,
+      imageUrl: "",
       x: 0,
       text: "",
       secondText: "",
@@ -214,8 +220,12 @@
         var shareURL = 'https://twitter.com/intent/tweet?text=' + "ツイッターシェアボタンのサンプルコード" + "%20%23あめねこサンプルコード集" + '&url=' + "https://code.ameneko.com/twitter-share";
         location.href = shareURL
       },
-      openClose: function() {
+      openClose: function () {
         this.drawer = !this.drawer;
+      },
+      showImage: function (data) {
+        this.imageUrl = data.url
+        this.imageDialog = true
       }
     },
 
