@@ -1,10 +1,9 @@
 <template>
   <v-app id="inspire">
-    
-    <Navigation></Navigation>
 
-    <Header></Header>
-    
+    <Navigation :drawer="drawer"></Navigation>
+
+    <Header @drawer="openClose"></Header>
     <v-content>
       <v-container class="fill-height" fluid >
         <v-row>
@@ -26,7 +25,7 @@
           <v-col cols="12">
             <controll></controll>
           </v-col>
-      
+
           <v-col cols="12" lg="6" md="12" sm="12" v-for="point in points" v-bind:key="'input-' + point.originX">
             <v-card
               outlined
@@ -68,7 +67,7 @@
               </v-list-item>
             </v-card>
           </v-col>
-        
+
         </v-row>
       </v-container>
     </v-content>
@@ -168,6 +167,7 @@
       rules: [
         v => v <= 40 || 'Only 40 in stock',
       ],
+      drawer: false
     }),
     created () {
       const pointsJson = localStorage.getItem('points')
@@ -211,8 +211,11 @@
         this.savePoint()
       },
       twitterShare(){
-        var shareURL = 'https://twitter.com/intent/tweet?text=' + "ツイッターシェアボタンのサンプルコード" + "%20%23あめねこサンプルコード集" + '&url=' + "https://code.ameneko.com/twitter-share";  
+        var shareURL = 'https://twitter.com/intent/tweet?text=' + "ツイッターシェアボタンのサンプルコード" + "%20%23あめねこサンプルコード集" + '&url=' + "https://code.ameneko.com/twitter-share";
         location.href = shareURL
+      },
+      openClose: function() {
+        this.drawer = !this.drawer;
       }
     },
 

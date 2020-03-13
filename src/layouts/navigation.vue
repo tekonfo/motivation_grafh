@@ -1,5 +1,6 @@
 <template>
   <v-navigation-drawer
+    v-model= drawer
     :clipped="$vuetify.breakpoint.lgAndUp"
     app
   >
@@ -107,7 +108,8 @@ export default {
         { icon: 'mdi-help-circle', text: 'Help' },
         { icon: 'mdi-cellphone-link', text: 'App downloads' },
         { icon: 'mdi-keyboard', text: 'Go to the old version' },
-      ],
-  })
+      ]
+  }),
+  props: ['drawer']
 }
 </script>
