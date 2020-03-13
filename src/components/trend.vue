@@ -6,11 +6,14 @@
       :viewBox="viewBox"
       ref="motivationGraphSvg"
       style="background-color:#FFFFFF;"
+
     >
+
       <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
       <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
       <PathLine ref="path" v-bind="{path, id}"></PathLine>
-      <Points v-bind="{boundary, points, allTextShow}" @changePoint="changePoint"></Points>
+      <Points v-bind="{boundary, points, allTextShow}" @changePoint="changePoint" ref="point"></Points>
+      
     </svg>
     <v-switch v-model="allTextShow" label="テキスト全表示"></v-switch>
     <v-btn @click="save">画像出力</v-btn>
@@ -89,8 +92,20 @@
       this.id = 'vue-trend-' + this._uid
     },
 
-    mounted: function mounted () {
-      // this.changePath()
+    mounted: function () {
+      console.log('MOUNT LISTENER ON')
+      this.$el.addEventListener('mouseup', this.$refs.point.mouseUp)
+      this.$el.addEventListener('mousemove', this.$refs.point.move)
+      this.$el.addEventListener('touchend', this.$refs.point.mouseUp)
+      this.$el.addEventListener('touchmove', this.$refs.point.touchMove, {passive: false})
+    },
+
+    deforeDestroy: function () {
+      console.log('MOUNT LISTENER OFF')
+      document.removeEventListener('mouseup',this.$refs.point.mouseUp)
+      document.removeEventListener('mousemove', this.$refs.point.move)
+      document.removeEventListener('touchend', this.$refs.point.mouseUp)
+      document.removeEventListener('touchmove', this.$refs.point.touchMove)
     },
 
     methods: {

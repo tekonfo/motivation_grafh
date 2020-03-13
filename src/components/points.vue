@@ -1,16 +1,5 @@
 <template>
   <g>
-    <circle v-for="(d, index) in points" v-bind:key="index" 
-    :cx="d.x" 
-    :cy="d.y" 
-    r="5" 
-    :fill="index===selectedId ? 'red' : 'black'"
-    @mousedown="setId($event, index)"
-    @touchstart="setId($event, index)"
-    >
-    <!-- @mouseover="showText($event, index)"
-    @mouseleave="closeText($event)" -->
-    </circle>
 
     <Bubble 
     v-for="(point, index) in points" v-bind:key="'bubble-' + index" 
@@ -30,8 +19,18 @@
     >{{ d.originX }}
     </text>
 
-    
-    
+
+    <circle v-for="(d, index) in points" v-bind:key="index" 
+    :cx="d.x" 
+    :cy="d.y" 
+    r="5" 
+    :fill="index===selectedId ? 'red' : 'black'"
+    @mousedown="setId($event, index)"
+    @touchstart="setId($event, index)"
+    >
+    <!-- @mouseover="showText($event, index)"
+    @mouseleave="closeText($event)" -->
+    </circle>
 
   </g>
 </template>
@@ -55,6 +54,15 @@
         showTextId: -1,
         fill: 'red'
       }
+    },
+
+    updated: function () {
+      // var svgz = require("svg-z-order")
+
+      // var point = this.$refs.point
+      // var svgzPoint = svgz.element(point)
+      // console.log(svgzPoint)
+      // svgzPoint.toTop()
     },
 
     computed: {
@@ -94,7 +102,7 @@
         event.preventDefault()
       },
       calcY: function (y) {
-var dy = 0
+        var dy = 0
         if (this.beforeMouseY) {
           dy = y - this.beforeMouseY
         }
@@ -122,24 +130,6 @@ var dy = 0
         this.beforeMouseY = null
         e.preventDefault()
       }
-    },
-
-    // マウス操作関連
-    mounted () {
-      console.log('MOUNT LISTENER ON')
-      document.addEventListener('mouseup', this.mouseUp)
-      document.addEventListener('mousemove', this.move)
-      document.addEventListener('touchend', this.mouseUp)
-      document.addEventListener('touchmove', this.touchMove, {passive: false})
-      // document.addEventListener('touchstart', this.mouseUp)
-    },
-
-    beforeDestroy () {
-      console.log('MOUNT LISTENER OFF')
-      document.addEventListener('mouseup', this.mouseUp)
-      document.addEventListener('mousemove', this.move)
-      document.addEventListener('touchend', this.mouseUp)
-      document.addEventListener('touchmove', this.move)
     }
   }
 </script>
