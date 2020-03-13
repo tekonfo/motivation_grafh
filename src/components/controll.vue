@@ -14,7 +14,7 @@
     </v-btn>
 
     <v-btn>
-      <span>ツイッターでシェア</span>
+      <span>シェア</span>
       <v-icon>mdi-twitter</v-icon>
     </v-btn>
   </v-bottom-navigation>

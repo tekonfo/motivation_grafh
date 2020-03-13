@@ -1,6 +1,5 @@
 <template>
   <div>
-    <span v-touch="touchHandler">Tap Me</span>
     <svg
       :width="'100%'" 
       :height="'100%'"

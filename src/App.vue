@@ -73,10 +73,6 @@
       </v-container>
     </v-content>
 
-    <div class="twitter_share">
-      <button @click="twitterShare">ツイッターでシェアする</button>
-    </div>
-
     <Button @upDialog="dialog = true"></Button>
 
     <v-dialog
