@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
 
-    <Navigation :drawer="drawer"></Navigation>
+    <!-- <Navigation :drawer="drawer"></Navigation> -->
 
     <Header @drawer="openClose"></Header>
 
@@ -127,13 +127,15 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <Footer />
   </v-app>
 </template>
 
 <script>
-  import Navigation from './layouts/navigation'
   import Header from './layouts/header'
   import Button from './layouts/button'
+  import Footer from './layouts/footer'
   import Trend from './components/trend'
   import ImageDialog from './components/imageDialog'
 
@@ -152,10 +154,10 @@
 
     components: {
       Trend,
-      Navigation,
       Header,
       Button,
-      ImageDialog
+      ImageDialog,
+      Footer
     },
 
     data: () => ({
