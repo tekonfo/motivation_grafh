@@ -36,6 +36,7 @@
         <v-icon>mdi-twitter</v-icon>
       </v-btn>
     </v-bottom-navigation>
+    
   </div>
 </template>
 

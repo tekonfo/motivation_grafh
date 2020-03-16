@@ -19,7 +19,7 @@
           <v-icon v-on="on">mdi-help-circle</v-icon>
         </v-btn>
       </template>
-      <help />
+      <help @tap="dialog = false"/>
     </v-dialog>
     <v-btn
       icon
@@ -30,8 +30,7 @@
         item
       >
         <v-img
-          src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-          alt="Vuetify"
+          src="../../public/favicon.png"
         /></v-avatar>
     </v-btn>
   </v-app-bar>
