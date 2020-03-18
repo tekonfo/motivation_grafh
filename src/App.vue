@@ -62,6 +62,7 @@
                     />
                     <v-switch 
                       v-model="point.isShowTextRight" 
+                      @change="savePoint"
                       label="テキスト右側表示" 
                     />
                   </v-list-item-subtitle>
@@ -180,7 +181,6 @@
       }else{
         this.points = templatePoints
       }
-      this.points = templatePoints
     },
 
     methods: {

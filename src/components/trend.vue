@@ -31,10 +31,10 @@
         <v-icon>mdi-image</v-icon>
       </v-btn>
 
-      <v-btn>
+      <!-- <v-btn>
         <span>シェア</span>
         <v-icon>mdi-twitter</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-bottom-navigation>
     
   </div>
