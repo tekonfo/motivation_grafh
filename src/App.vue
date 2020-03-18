@@ -173,11 +173,9 @@
       gradient: [],
       dialog: false,
       value: 30,
-      rules: [
-        v => v <= 40 || 'Only 40 in stock',
-      ],
       drawer: false
     }),
+
     created () {
       const pointsJson = localStorage.getItem('points')
       if (pointsJson) {
