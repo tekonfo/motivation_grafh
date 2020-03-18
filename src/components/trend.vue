@@ -69,7 +69,6 @@
         type: Number,
         default: 10
       },
-      isMove: Boolean,
       smooth: Boolean
     },
 
@@ -103,9 +102,7 @@
         maxX: this.viewWidth - this.padding.x,
         maxY: this.viewHeight - this.padding.y
       }
-    
-      this.points = genPoints(this.value, this.boundary)
-      this.path = genPath(this.points, this.smooth ? this.radius : 0)
+  
       this.id = 'vue-trend-' + this._uid
     },
 
@@ -127,7 +124,7 @@
 
     methods: {
       touchHandler: function () {
-        console.log("test")
+        
       },
       changePath: function () {
         const path = this.$refs.path.$el

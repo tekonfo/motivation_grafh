@@ -20,7 +20,6 @@
               :gradient="gradient"
               :height="500"
               :width="1000"
-              :isMove="isMove"
               :selectedId="selecetedId"
               @changePoint="changePoint"
               @clearPoint="clearPoint"
@@ -93,7 +92,7 @@
                 v-model="x"
                 thumb-label
                 label="いつ？"
-                :rules="[v => pointsX.indexOf(v) === -1 || '既に選択されています',]"
+                :rules="rules"
               ></v-slider>
             </v-col>
             <v-col cols="12">
@@ -139,15 +138,15 @@
   import ImageDialog from './components/imageDialog'
 
   const templatePoints = [
-        { x: 0, y: 0, originX: 12,originY: 80, text: '小学校時代。', secondText: '毎日楽しい', isShowTextRight: true   },
-        { x: 0, y: 0, originX: 13,originY: 30, text: '中学校・バスケ部入部　顧問が怖くて毎日震える', secondText: 'バスケ漬けの毎日', isShowTextRight: true },
-        { x: 0, y: 0, originX: 14,originY: 100, text: '市の選抜選手に選ばれる！', secondText: '', isShowTextRight: false },
-        { x: 0, y: 0, originX: 15,originY: 100, text: '高校第一志望入学・初めの彼女ができる' , secondText: '毎日楽しい', isShowTextRight: true},
-        { x: 0, y: 0, originX: 18,originY: 10, text: '第一志望に落ちる。。。浪人生活突入', secondText: '一日8時間勉強' , isShowTextRight: true},
-        { x: 0, y: 0, originX: 19,originY: 90, text: '第一志望合格！！！華の大学生活へ', secondText: '', isShowTextRight: false },
-        { x: 0, y: 0, originX: 20,originY: 60, text: 'RubyOnRailsでWeb開発を始める', secondText: '', isShowTextRight: true },
-        { x: 0, y: 0, originX: 22,originY: 80, text: 'Web開発にのめり込む', secondText: '色々インターンに行く', isShowTextRight: false },
-        { x: 0, y: 0, originX: 23,originY: 90, text: '京大大学院合格', isShowTextRight: false },
+        { originX: 12,originY: 80, text: '小学校時代。', secondText: '毎日楽しい', isShowTextRight: true   },
+        { originX: 13,originY: 30, text: '中学校・バスケ部入部　顧問が怖くて毎日震える', secondText: 'バスケ漬けの毎日', isShowTextRight: true },
+        { originX: 14,originY: 100, text: '市の選抜選手に選ばれる！', secondText: '', isShowTextRight: false },
+        { originX: 15,originY: 100, text: '高校第一志望入学・初めの彼女ができる' , secondText: '毎日楽しい', isShowTextRight: true},
+        { originX: 18,originY: 10, text: '第一志望に落ちる。。。浪人生活突入', secondText: '一日8時間勉強' , isShowTextRight: true},
+        { originX: 19,originY: 90, text: '第一志望合格！！！華の大学生活へ', secondText: '', isShowTextRight: false },
+        { originX: 20,originY: 60, text: 'RubyOnRailsでWeb開発を始める', secondText: '', isShowTextRight: true },
+        { originX: 22,originY: 80, text: 'Web開発にのめり込む', secondText: '色々インターンに行く', isShowTextRight: false },
+        { originX: 23,originY: 90, text: '京大大学院合格', isShowTextRight: false },
       ]
 
   export default {
@@ -167,12 +166,10 @@
       x: 0,
       text: "",
       secondText: "",
-      isMove: false,
       selecetedId: 0,
       points: [],
-      gradient: [],
+      gradient: ['#6fa8dc', '#42b983', '#2c3e50'],
       dialog: false,
-      value: 30,
       drawer: false
     }),
 
@@ -184,7 +181,6 @@
         this.points = templatePoints
       }
       this.points = templatePoints
-      this.gradient = ['#6fa8dc', '#42b983', '#2c3e50']
     },
 
     methods: {
@@ -201,7 +197,7 @@
         localStorage.setItem('points', JSON.stringify(this.points))
       },
       addPoint: function () {
-        const newPoint = { x: 0, y: 0, originX: this.x, originY: 50, text: this.text, secondText: this.secondText }
+        const newPoint = { originX: this.x, originY: 50, text: this.text, secondText: this.secondText }
         const index = this.points.findIndex((v) => v.originX > this.x)
         // ない場合、末尾に挿入
         if (index === -1) {
@@ -216,10 +212,6 @@
         const index = this.points.findIndex((v) => v.originX === point.originX)
         this.points.splice(index, 1, point)
         this.savePoint()
-      },
-      twitterShare(){
-        var shareURL = 'https://twitter.com/intent/tweet?text=' + "ツイッターシェアボタンのサンプルコード" + "%20%23あめねこサンプルコード集" + '&url=' + "https://code.ameneko.com/twitter-share";
-        location.href = shareURL
       },
       openClose: function () {
         this.drawer = !this.drawer;
@@ -236,6 +228,9 @@
           return [ point.originX ]
         })
         return pointsX
+      },
+      rules: function () {
+        return [v => this.pointsX.indexOf(v) === -1 || '既に選択されています',]
       }
     }
   };

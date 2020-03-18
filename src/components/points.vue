@@ -2,7 +2,8 @@
   <g>
 
     <Bubble 
-    v-for="(point, index) in points" v-bind:key="'bubble-' + index" 
+    v-for="(point, index) in points" 
+    v-bind:key="'bubble-' + index" 
     :point="point"
     :maxX="boundary.maxX"
     :index="index"
@@ -10,7 +11,8 @@
     :showTextId="showTextId"
     ></Bubble>
     
-    <text v-for="(d, index) in points" v-bind:key="'axis-' + index" 
+    <text v-for="(d, index) in points" 
+    v-bind:key="'axis-' + index" 
     :x="d.x"
     :y="centerLine + 5"
     dominant-baseline="hanging"
@@ -20,7 +22,8 @@
     </text>
 
 
-    <circle v-for="(d, index) in points" v-bind:key="index" 
+    <circle v-for="(d, index) in points" 
+    v-bind:key="index" 
     :cx="d.x" 
     :cy="d.y" 
     r="5" 
@@ -56,15 +59,6 @@
       }
     },
 
-    updated: function () {
-      // var svgz = require("svg-z-order")
-
-      // var point = this.$refs.point
-      // var svgzPoint = svgz.element(point)
-      // console.log(svgzPoint)
-      // svgzPoint.toTop()
-    },
-
     computed: {
       centerLine: function () {
         return (this.boundary.maxY / 2)
@@ -96,7 +90,7 @@
       },
       touchMove: function (event) {
         if (!this.isMove) return
-        console.log('move')
+        console.log('touchmove')
         var mouseY = event.changedTouches[0].pageY;
         this.calcY(mouseY)
         event.preventDefault()
