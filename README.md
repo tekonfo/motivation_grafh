@@ -1,26 +1,29 @@
 # motivation_graph
+モチベーショングラフを楽に作成できるアプリケーションです。
 
-## Project setup
+
+## セットアップ
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 開発サーバー
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### コンパイル
+/distに作成される
 ```
 npm run build
 ```
 
-### Lints and fixes files
+### リント
 ```
 npm run lint
 ```
 
-### Customize configuration
+### コンフィグ
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### デプロイ方法
