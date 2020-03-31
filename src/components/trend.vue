@@ -5,13 +5,18 @@
       :height="'100%'"
       :viewBox="viewBox"
       ref="motivationGraphSvg"
-      style="background-color:#FFFFFF;"
+      style="background-color:#FFFFFF; overflow: scroll;"
     >
 
       <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
       <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
       <PathLine ref="path" v-bind="{path, id}"></PathLine>
-      <Points v-bind="{boundary, points, allTextShow}" @changePoint="changePoint" ref="point"></Points>
+      <Points 
+        v-bind="{boundary, points, allTextShow}" 
+        @changePoint="changePoint" 
+        @selectPoint="selectPoint" 
+        ref="point"
+      ></Points>
       
     </svg>
 
@@ -19,7 +24,9 @@
     grow
     color="teal"
     >
-      <v-switch v-model="allTextShow" label="text表示" />
+      <v-btn @click="allTextShow = !allTextShow">
+        <span>テキスト表示</span>
+      </v-btn>
 
       <v-btn @click="clearPoint">
         <span>全消去</span>
@@ -134,6 +141,9 @@
       },
       changePoint: function (point) {
         this.$emit('changePoint', point)
+      },
+      selectPoint: function (index) {
+        this.$emit('selectPoint', index)
       },
       clearPoint: function () {
         this.$emit('clearPoint')

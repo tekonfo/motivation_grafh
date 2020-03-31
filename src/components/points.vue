@@ -118,6 +118,7 @@
       mouseUp (e) {
         console.log('mouseUp')
         this.changePoint()
+        this.$emit('selectPoint', this.selectedId)
         this.selectedId = -1
         this.isMove = false
         this.beforeMouseX = null
