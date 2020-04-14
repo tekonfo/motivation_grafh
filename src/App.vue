@@ -29,6 +29,7 @@
               :height="500"
               :width="1000"
               :selectedId="selectedId"
+              :groupLines="groupLines"
               @changePoint="changePoint"
               @clearPoint="clearPoint"
               @outputImage="showImage"
@@ -126,6 +127,19 @@
                   v-model="secondText"
                 />
               </v-col>
+              <v-col cols="12">
+                <v-slider
+                  v-model="groupLineX"
+                  thumb-label
+                  label="test"
+                />
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="groupLineTitle"
+                  placeholder="〜時代だった？"
+                />
+              </v-col>
             </v-row>
           </v-container>
           <v-card-actions>
@@ -140,6 +154,11 @@
               color="primary"
               :disabled="button_rules"
             >Save</v-btn>
+            <v-btn
+              text
+              @click="addGroupLine()"
+              color="primary"
+            >GroupLineSave</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -209,9 +228,12 @@
       imageUrl: "",
       x: 0,
       y: 0,
+      groupLineX: 0,
+      groupLineTitle: '',
       text: "",
       secondText: "",
       points: [],
+      groupLines: [{title: '小学校時代', x: 15}],
       gradient: ['#6fa8dc', '#42b983', '#2c3e50'],
       dialog: false,
       drawer: false
@@ -269,6 +291,11 @@
         }
         this.dialog = false
         this.savePoint()
+      },
+      addGroupLine: function () {
+        const newGroupLine = { x: this.groupLineX, title: this.groupLineTitle }
+        this.groupLines.splice(0, 0, newGroupLine)
+        this.dialog = false
       },
       changePoint: function (point) {
         const index = this.points.findIndex((v) => v.originX === point.originX)

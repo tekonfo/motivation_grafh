@@ -7,7 +7,14 @@
       ref="motivationGraphSvg"
       style="background-color:#FFFFFF; overflow: scroll;"
     >
-
+      <!-- <GroupLine
+        v-for="groupLine in groupLines"
+        v-bind:key="'input-' + groupLine.x"
+        stroke="black"
+        :boundary="boundary"
+        :x="originX2X(groupLine.x)"
+        :title="groupLine.title"
+      /> -->
       <Gradient v-bind="{gradient, gradientDirection, id}"></Gradient>
       <VerticalAxis v-bind="{id, boundary, padding}"></VerticalAxis>
       <PathLine ref="path" v-bind="{path, id}"></PathLine>
@@ -17,6 +24,7 @@
         @selectPoint="selectPoint" 
         ref="point"
       ></Points>
+      
       
     </svg>
 
@@ -51,13 +59,18 @@
   import PathLine from './path'
   import Gradient from './gradient'
   import VerticalAxis from './vartical'
+  // import GroupLine from './groupLine'
   import Points from './points'
   import { genPoints, genPath } from '../helpers/path'
   import * as svg from 'save-svg-as-png';
 
   export default {
     components: {
-      PathLine, Gradient, VerticalAxis, Points
+      PathLine, 
+      Gradient, 
+      VerticalAxis, 
+      Points, 
+      // GroupLine
     },
 
     props: {
@@ -76,7 +89,8 @@
         type: Number,
         default: 10
       },
-      smooth: Boolean
+      smooth: Boolean,
+      groupLines: Array
     },
 
     data: function () {
@@ -164,13 +178,25 @@
         svg.svgAsPngUri(this.$refs['motivationGraphSvg']).then(
           uri => this.$emit('outputImage', {url: uri})
         );
+      },
+      originX2X: function (originX) {
+        // ここってこれでいいんかな
+        if (this.points.length < 2){
+          return 0
+        }
+
+        const arrX = this.points.map((value) => { return value.originX })
+        const offsetX = arrX[0]
+        const lengthX = arrX[arrX.length - 1] - arrX[0]
+        const gridX = (this.boundary.maxX - this.boundary.minX) / (Math.max(lengthX, 0))    
+        return (originX - offsetX) * gridX + this.boundary.minX
       }
     },
 
     computed: {
       viewBox: function () {
         return [0, 0, this.viewWidth, this.viewHeight].join(' ')
-      }
+      },
     },
 
     watch: {
