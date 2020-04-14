@@ -127,7 +127,7 @@
                   v-model="secondText"
                 />
               </v-col>
-              <v-col cols="12">
+              <!-- <v-col cols="12">
                 <v-slider
                   v-model="groupLineX"
                   thumb-label
@@ -139,7 +139,7 @@
                   v-model="groupLineTitle"
                   placeholder="〜時代だった？"
                 />
-              </v-col>
+              </v-col> -->
             </v-row>
           </v-container>
           <v-card-actions>
@@ -154,11 +154,11 @@
               color="primary"
               :disabled="button_rules"
             >Save</v-btn>
-            <v-btn
+            <!-- <v-btn
               text
               @click="addGroupLine()"
               color="primary"
-            >GroupLineSave</v-btn>
+            >GroupLineSave</v-btn> -->
           </v-card-actions>
         </v-card>
       </v-dialog>
